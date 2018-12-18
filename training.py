@@ -6,11 +6,11 @@ import os
 import re
 import numpy as np
 
-PATH        = "C:/users/arneb/P&O3/Data/REDD/data/low_freq"                   # Path to the low_freq folder of the REDD dataset
+PATH        = "../../../Data/REDD/data/low_freq"                   # Path to the low_freq folder of the REDD dataset
 LENGTH      = 128
 STRIDE      = 8
-ENCODING    = 48
-NUM_FILTERS = 8
+ENCODING    = .5
+NUM_FILTERS = 9
 
 
 def prep_data(houses_channels, max_off_on=1, train_ratio=.8, path=PATH, length=LENGTH, stride=STRIDE):
@@ -25,6 +25,7 @@ def prep_data(houses_channels, max_off_on=1, train_ratio=.8, path=PATH, length=L
         xs_on  = []
         xs_off = []
         ys_on  = []
+
         ys_off = []
         
         for file in os.listdir(preprocessed_path):
@@ -95,8 +96,8 @@ def train(model, xs, ys, epochs=30, batch_size=64, verbose=1):
     model.fit(np.expand_dims(xs, axis=2), ys, epochs=epochs, batch_size=batch_size, verbose=verbose)
     
     
-def train_new_model(houses_channels, encoding=ENCODING, length=LENGTH, stride=STRIDE, epochs=30, batch_size=64, max_off_on=1):
-    model = create_model()
+def train_new_model(houses_channels, encoding=ENCODING, num_filters=NUM_FILTERS, length=LENGTH, stride=STRIDE, epochs=30, batch_size=64, max_off_on=1):
+    model = create_model(encoding=encoding, num_filters=num_filters, length=length)
     
     xs, ys, _, _ = prep_data(houses_channels, length=length, stride=stride, max_off_on=max_off_on)
     
@@ -104,3 +105,17 @@ def train_new_model(houses_channels, encoding=ENCODING, length=LENGTH, stride=ST
     
     return model
     
+
+"""
+m = create_model()
+import os
+runfile('C:/Users/arneb/P&O3/Code/Project/Preprocessing/predict.py', wdir='C:/Users/arneb/P&O3/Code/Project/Preprocessing')
+t,d=read_npy_file(PATH + "/house_2/channel_9_preprocessed/file_5.npy")
+test_xs = np.split(d,2)[1][10300:12300]
+xs, ys, _, _ = prep_data(((2,9),))
+if not os.path.exists("./AutoEncoders"):os.mkdir("./AutoEncoders")
+for i in range(20):
+    train(m, xs, ys, epochs=1)
+    predictions = predict(m, test_xs)
+    np.save(f"./AutoEncoders/data_{i+1}.npy", predictions)
+"""
