@@ -5,7 +5,7 @@ import os
 from files import read_npy_file
 import matplotlib.pyplot as plt
 
-PATH    = "C:/users/arneb/P&O3/Data/REDD/data/low_freq"                   # Path to the low_freq folder of the REDD dataset
+PATH    = "../../../Data/REDD/data/low_freq"                   # Path to the low_freq folder of the REDD dataset
 
 """
 def predict(model, xs, weights=None, model_predictions=None):
@@ -59,10 +59,14 @@ def test_mse(model, xs, ys, plot=True, weights=None):
     #        predictions[i] = 0
     
     if plot:
-        #plt.plot(np.arange(min(20000, len(predictions) - 10000)) / 3600, predictions[10000:30000] * 800, 'C3')
-        #plt.show()
-        plt.plot(np.arange(min(20000, len(predictions))) / 3600, ys[:20000] * 800, 'C2')
+        plt.plot(predictions)
         plt.show()
+        plt.plot(ys)
+        plt.show()
+#        plt.plot(np.arange(min(20000, len(predictions) - 10000)) / 3600, predictions[10000:30000] * 800, 'C3')
+#        plt.show()
+#        plt.plot(np.arange(min(20000, len(predictions))) / 3600, predictions[:20000] * 800, 'C2')
+#        plt.show()
         print()
         print()
     
